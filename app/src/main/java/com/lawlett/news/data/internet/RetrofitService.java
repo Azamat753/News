@@ -18,6 +18,8 @@ public interface RetrofitService {
     @GET("v2/everything")
     Call<Example> getNewsByKeyWord(@Query("q") String q,
                                    @Query("language") String country,
-                                   @Query("apiKey") String apikey);
+                                   @Query("apiKey") String apikey,
+                                   @Query("page") int page,
+                                   @Query("pageSize") int pageSize);
 }
 

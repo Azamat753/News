@@ -12,28 +12,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.lawlett.news.utils.Extension;
-import com.lawlett.news.utils.IOnClickListener;
 import com.lawlett.news.R;
 import com.lawlett.news.data.models.Article;
 import com.lawlett.news.ui.DetailActivity;
+import com.lawlett.news.utils.Extension;
+import com.lawlett.news.utils.IOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> implements IOnClickListener {
-    List<Article> list=new ArrayList<>();
+    List<Article> list = new ArrayList<>();
     private Context context;
     private static final int LOADING = 0;
     private static final int ITEM = 1;
     private boolean isLoadingAdded = false;
+
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        LayoutInflater inflater =LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.news_holder,parent,false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.news_holder, parent, false);
         NewsViewHolder view_holder = new NewsViewHolder(view);
         view_holder.setOnClickListener(this);
         return view_holder;
@@ -41,8 +41,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
-        holder.bind(list.get(position),position);
+        holder.bind(list.get(position), position);
     }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -52,14 +53,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         this.list = list;
         notifyDataSetChanged();
     }
-    public void clear(){
+
+
+    public void clear() {
         list.clear();
     }
 
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra("url",list.get(position).getUrl());
+        intent.putExtra("url", list.get(position).getUrl());
         context.startActivity(intent);
     }
 
@@ -81,16 +84,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                 }
             });
         }
-        public void bind(Article example,int position) {
+
+        public void bind(Article example, int position) {
             title.setText((example.getTitle()));
             subTitle.setText(example.getDescription());
-            Extension.loadImage(itemView.getContext(),example.getUrlToImage(),newsImage);
+            Extension.loadImage(itemView.getContext(), example.getUrlToImage(), newsImage);
             this.position = position;
         }
-        public void setOnClickListener(IOnClickListener listener){
+
+        public void setOnClickListener(IOnClickListener listener) {
             this.listener = listener;
         }
     }
+
     public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         private ProgressBar progressBar;
