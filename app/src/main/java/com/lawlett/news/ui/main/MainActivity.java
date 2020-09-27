@@ -1,6 +1,7 @@
 package com.lawlett.news.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +21,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.lawlett.news.R;
 import com.lawlett.news.data.models.Article;
 import com.lawlett.news.recycler.NewsAdapter;
+import com.lawlett.news.ui.DetailActivity;
+import com.lawlett.news.ui.DetailsActivity;
 import com.lawlett.news.utils.App;
 import com.lawlett.news.utils.Extension;
+import com.lawlett.news.utils.IOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 refreshRecyclerView();
+            }
+        });
+
+        adapter.setOnItemClickListener(new IOnClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("url", list.get(position).getUrl());
+                startActivity(intent);
             }
         });
     }

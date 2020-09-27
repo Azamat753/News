@@ -1,7 +1,6 @@
 package com.lawlett.news.recycler;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lawlett.news.R;
 import com.lawlett.news.data.models.Article;
-import com.lawlett.news.ui.DetailActivity;
 import com.lawlett.news.utils.Extension;
 import com.lawlett.news.utils.IOnClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> implements IOnClickListener {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     List<Article> list = new ArrayList<>();
     private Context context;
-    private static final int LOADING = 0;
-    private static final int ITEM = 1;
-    private boolean isLoadingAdded = false;
+    private IOnClickListener listener;
 
     @NonNull
     @Override
@@ -34,13 +30,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.news_holder, parent, false);
         NewsViewHolder view_holder = new NewsViewHolder(view);
-        view_holder.setOnClickListener(this);
         return view_holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
-        holder.bind(list.get(position), position);
+        holder.bind(list.get(position));
     }
 
     @Override
@@ -58,23 +53,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         notifyDataSetChanged();
     }
 
-
-    public void clear() {
-        list.clear();
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra("url", list.get(position).getUrl());
-        context.startActivity(intent);
+    public void setOnItemClickListener(IOnClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
     }
 
     class NewsViewHolder extends RecyclerView.ViewHolder {
         TextView title, subTitle;
         ImageView newsImage;
-        private IOnClickListener listener;
-        private int position;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,20 +69,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(position);
+                    listener.onItemClick(getAdapterPosition());
                 }
             });
         }
 
-        public void bind(Article example, int position) {
+        public void bind(Article example) {
             title.setText((example.getTitle()));
             subTitle.setText(example.getDescription());
             Extension.loadImage(itemView.getContext(), example.getUrlToImage(), newsImage);
-            this.position = position;
-        }
 
-        public void setOnClickListener(IOnClickListener listener) {
-            this.listener = listener;
         }
     }
 

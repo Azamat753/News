@@ -6,8 +6,11 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 @Entity
-public class Article {
+public class Article implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
