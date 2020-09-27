@@ -1,6 +1,7 @@
 package com.lawlett.news.ui.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -21,7 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.lawlett.news.R;
 import com.lawlett.news.data.models.Article;
 import com.lawlett.news.recycler.NewsAdapter;
-import com.lawlett.news.ui.DetailActivity;
+import com.lawlett.news.ui.WebActivity;
 import com.lawlett.news.ui.DetailsActivity;
 import com.lawlett.news.utils.App;
 import com.lawlett.news.utils.Extension;
@@ -41,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
     MainViewModel viewModel;
     int page = 1, pageSize = 10;
     private ConnectivityManager connectivityManager;
+    public static final String IMAGE = "DIMAGE";
+    public static final String TITLE = "DTITLE";
+    public static final String DESC = "DDESC";
+    public static final String PUBLISHED = "DPUB";
+    public static final String URL = "DURL";
+    public static final String AUTHOR = "AUTHOR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
                         page++;
                         pageSize = +10;
                         progressBar.setVisibility(View.VISIBLE);
-                        viewModel.getDataByNews(page,pageSize);
-                    }else {
+                        viewModel.getDataByNews(page, pageSize);
+                    } else {
                         Extension.showToast(MainActivity.this, "Проверьте интернет");
                     }
                 }
@@ -139,9 +147,32 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new IOnClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                intent.putExtra("url", list.get(position).getUrl());
-                startActivity(intent);
+
+                final String[] listItems = {"Детали", "Веб страница"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Выберите куда перейти");
+                builder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        if (i == 0) {
+                            Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                            intent.putExtra(IMAGE, list.get(position).getUrlToImage());
+                            intent.putExtra(TITLE, list.get(position).getTitle());
+                            intent.putExtra(DESC, list.get(position).getDescription());
+                            intent.putExtra(PUBLISHED, list.get(position).getPublishedAt());
+                            intent.putExtra(URL, list.get(position).getUrl());
+                            intent.putExtra(AUTHOR, list.get(position).getAuthor());
+                            startActivity(intent);
+                        } else if (i == 1) {
+                            Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                            intent.putExtra("url", list.get(position).getUrl());
+                            startActivity(intent);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog mDialog = builder.create();
+                mDialog.show();
             }
         });
     }

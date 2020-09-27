@@ -8,7 +8,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lawlett.news.R;
 import com.lawlett.news.utils.Extension;
 
-public class DetailActivity extends AppCompatActivity {
+public class WebActivity extends AppCompatActivity {
     private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_web);
         webView = findViewById(R.id.detial_webView);
         setContent();
         initListeners();
@@ -42,7 +41,7 @@ public class DetailActivity extends AppCompatActivity {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Extension.showToast(DetailActivity.this,"More");
+                Extension.showToast(WebActivity.this,"More");
             }
         });
     }
