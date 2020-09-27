@@ -8,9 +8,9 @@ import retrofit2.http.Query;
 
 public interface RetrofitService {
     @GET("v2/top-headlines")
-    Call<Example> getExample(
+    Call<Example> getNewsByCategory(
             @Query("apiKey") String apikey,
-            @Query("country") String language,
+            @Query("country") String country,
             @Query("category")String category,
             @Query("page") int page,
             @Query("pageSize") int pageSize

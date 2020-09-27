@@ -1,12 +1,19 @@
 package com.lawlett.news.data.models;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+@Entity
 public class Article {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
     @SerializedName("source")
-    @Expose
+    @Ignore
     private Source source;
     @SerializedName("author")
     @Expose
@@ -94,4 +101,11 @@ public class Article {
         this.content = content;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

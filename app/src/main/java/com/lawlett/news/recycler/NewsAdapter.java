@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +53,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         notifyDataSetChanged();
     }
 
+    public void updateAdapter(List<Article> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
 
     public void clear() {
         list.clear();
@@ -94,17 +98,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         public void setOnClickListener(IOnClickListener listener) {
             this.listener = listener;
-        }
-    }
-
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-
-        private ProgressBar progressBar;
-
-        public LoadingViewHolder(View itemView) {
-            super(itemView);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.my_progressBar);
-
         }
     }
 

@@ -5,29 +5,24 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import com.lawlett.news.data.models.NewsModel;
+import com.lawlett.news.data.models.Article;
+
 import java.util.List;
 
 @Dao
 public interface NewsDao {
-    @Query("SELECT*FROM newsModel")
-    List<NewsModel> getAll();
 
-    @Query("SELECT*FROM newsModel")
-    LiveData<List<NewsModel>> getAllLive();
+    @Query("SELECT*FROM article")
+    List<Article> getAll();
+
+    @Query("SELECT*FROM article")
+    LiveData<List<Article>> getAllLive();
 
     @Insert
-    void insert(NewsModel newsModel);
+    void insert(List<Article> articles);
 
-    @Delete
-    void delete(NewsModel newsModel);
-
-    @Delete
-    void deleteAll(List<NewsModel> newsModel);
-
-    @Update
-    void update(NewsModel newsModel);
+    @Query("DELETE FROM article")
+    void deleteAll();
 
 }
